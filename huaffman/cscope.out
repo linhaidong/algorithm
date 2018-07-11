@@ -1,0 +1,886 @@
+cscope 15 $HOME/mach/huaffman -q 0000000070 0000004354
+	@/home/lin/mach/huaffman/huffman.cpp
+
+8 
+	~<io¡»am
+>
+
+9 
+	~<m­
+>
+
+10 
+	~<¡dio.h
+>
+
+11 
+	~<¡dlib.h
+>
+
+12 
+	~<uni¡d.h
+>
+
+13 
+	~<veùÜ
+>
+
+14 
+	~<queue
+>
+
+15 
+	~<¡ršg.h
+>
+
+16 
+	~<®gÜ™hm
+>
+
+17 
+usšg
+ 
+Çme¥aû
+ 
+	g¡d
+;
+
+18 
+	#MAX_LINE
+ 512
+
+	)
+
+19 
+	#LEN
+ 512
+
+	)
+
+20 
+	shuffmª_node
+{
+
+21 
+	mc
+;
+
+22 
+	mweight
+;
+
+23 
+	mhuffmª_code
+[
+LEN
+];
+
+24 
+huffmª_node
+ * 
+	mËá
+;
+
+25 
+huffmª_node
+ * 
+	mright
+;
+
+28 
+boÞ
+ 
+	$sÜt_by_weight
+(
+huffmª_node
+ * 
+n1
+, huffmª_nod*
+n2
+)
+
+30  
+n1
+->
+weight
+ >‚1->weight;
+
+31 
+	}
+}
+
+32 
+huffmª_Œ“_ü—‹
+(
+huffmª_node
+ *&
+roÙ
+, 
+m­
+<, > &
+wÜd
+){
+
+33 
+	glše
+[
+MAX_LINE
+];
+
+34 
+	gveùÜ
+<
+	ghuffmª_node
+ *> 
+	ghuffmª_Œ“_node
+;
+
+36 
+	gm­
+<, >::
+™”©Ü
+ 
+™_t
+;
+
+37 
+	g™_t
+ = 
+wÜd
+.
+begš
+(); it_ˆ!ðwÜd.
+’d
+(); it_t++){
+
+39 
+huffmª_node
+ *
+	gnode
+ = (huffmª_nod*)
+m®loc
+((huffman_node));
+
+40 
+	gnode
+->
+	gc
+ = 
+™_t
+->
+fœ¡
+;
+
+41 
+	gnode
+->
+	gweight
+ = 
+™_t
+->
+£cÚd
+;
+
+42 
+	gnode
+->
+	gËá
+ = 
+NULL
+;
+
+43 
+	gnode
+->
+	gright
+ = 
+NULL
+;
+
+44 
+	ghuffmª_Œ“_node
+.
+push_back
+(
+node
+);
+
+49 
+	ghuffmª_Œ“_node
+.
+size
+() > 0){
+
+51 
+sÜt
+(
+huffmª_Œ“_node
+.
+begš
+(), huffmª_Œ“_node.
+’d
+(), 
+sÜt_by_weight
+);
+
+53 ià(
+	ghuffmª_Œ“_node
+.
+size
+() == 1){
+
+54 
+roÙ
+ = 
+huffmª_Œ“_node
+[0];
+
+55 
+	ghuffmª_Œ“_node
+.
+”a£
+(
+huffmª_Œ“_node
+.
+begš
+());
+
+58 
+huffmª_node
+ *
+	gnode_1
+ = 
+huffmª_Œ“_node
+[0];
+
+59 
+huffmª_node
+ *
+	gnode_2
+ = 
+huffmª_Œ“_node
+[1];
+
+61 
+	ghuffmª_Œ“_node
+.
+”a£
+(
+huffmª_Œ“_node
+.
+begš
+());
+
+62 
+	ghuffmª_Œ“_node
+.
+”a£
+(
+huffmª_Œ“_node
+.
+begš
+());
+
+64 
+huffmª_node
+ *
+	gnode
+ = (huffmª_nod*)
+m®loc
+((huffman_node));
+
+65 
+	gnode
+->
+	gweight
+ = 
+node_1
+->
+weight
+ + 
+node_2
+->weight;
+
+66 (
+	gnode_1
+->
+	gweight
+ < 
+	gnode_2
+->weight)?(
+	gnode
+->
+	gËá
+=
+node_1
+,node->
+	gright
+=
+node_2
+):(
+node
+->
+Ëá
+=node_2,node->right=node_1);
+
+67 
+	ghuffmª_Œ“_node
+.
+push_back
+(
+node
+);
+
+73 
+»ad_fže
+(
+FILE
+ *
+â
+, 
+m­
+<, > &
+wÜd
+){
+
+74 ià(
+	gâ
+ =ð
+NULL
+)  1;
+
+75 
+	glše
+[
+MAX_LINE
+];
+
+76 
+fg‘s
+(
+lše
+, 1024, 
+â
+)){
+
+77 
+årštf
+(
+¡d”r
+, "%s\n", 
+lše
+);
+
+79 *
+	gp
+ = 
+lše
+;
+
+80 *
+	gp
+ !ð'\0' && *
+p
+ != '\n'){
+
+81 
+m­
+<, >::
+™”©Ü
+ 
+™
+ = 
+wÜd
+.
+fšd
+(*
+p
+);
+
+82 ià(
+	g™
+ =ð
+wÜd
+.
+’d
+()){
+
+83 
+wÜd
+.
+š£¹
+(
+make_·œ
+(*
+p
+, 1));
+
+85 
+	g™
+->
+	g£cÚd
+ ++;
+
+87 
+	gp
+ ++;
+
+94 
+	$´št_huffmª_´e
+(
+huffmª_node
+ *
+node
+){
+
+95 ià(
+node
+ !ð
+NULL
+){
+
+96 
+	`årštf
+(
+¡d”r
+, "%c\t%d\n", 
+node
+->
+c
+,‚ode->
+weight
+);
+
+97 
+	`´št_huffmª_´e
+(
+node
+->
+Ëá
+);
+
+98 
+	`´št_huffmª_´e
+(
+node
+->
+right
+);
+
+100 
+	}
+}
+
+103 
+	$de¡Üy_huffmª_Œ“
+(
+huffmª_node
+ *
+node
+){
+
+104 ià(
+node
+ !ð
+NULL
+){
+
+105 
+	`de¡Üy_huffmª_Œ“
+(
+node
+->
+Ëá
+);
+
+106 
+	`de¡Üy_huffmª_Œ“
+(
+node
+->
+right
+);
+
+107 
+	`ä“
+(
+node
+);
+
+108 
+node
+ = 
+NULL
+;
+
+110 
+	}
+}
+
+113 
+	$g‘_huffmª_code
+(
+huffmª_node
+ *&
+node
+){
+
+114 ià(
+node
+ =ð
+NULL
+)  1;
+
+116 
+huffmª_node
+ *
+p
+ = 
+node
+;
+
+117 
+queue
+<
+huffmª_node
+ *> 
+q
+;
+
+118 
+q
+.
+	`push
+(
+p
+);
+
+119 
+q
+.
+	`size
+() > 0){
+
+120 
+p
+ = 
+q
+.
+	`äÚt
+();
+
+121 
+q
+.
+	`pÝ
+();
+
+122 ià(
+p
+->
+Ëá
+ !ð
+NULL
+){
+
+123 
+q
+.
+	`push
+(
+p
+->
+Ëá
+);
+
+124 
+	`¡rýy
+((
+p
+->
+Ëá
+)->
+huffmª_code
+,…->huffman_code);
+
+125 *
+±r
+ = (
+p
+->
+Ëá
+)->
+huffmª_code
+;
+
+126 *
+±r
+ != '\0'){
+
+127 
+±r
+ ++;
+
+129 *
+±r
+ = '0';
+
+131 ià(
+p
+->
+right
+ !ð
+NULL
+){
+
+132 
+q
+.
+	`push
+(
+p
+->
+right
+);
+
+133 
+	`¡rýy
+((
+p
+->
+right
+)->
+huffmª_code
+,…->huffman_code);
+
+134 *
+±r
+ = (
+p
+->
+right
+)->
+huffmª_code
+;
+
+135 *
+±r
+ != '\0'){
+
+136 
+±r
+ ++;
+
+138 *
+±r
+ = '1';
+
+144 
+	}
+}
+
+147 
+	$´št_huffmª_š
+(
+huffmª_node
+ *
+node
+){
+
+148 ià(
+node
+ !ð
+NULL
+){
+
+149 
+	`´št_huffmª_š
+(
+node
+->
+Ëá
+);
+
+150 
+	`årštf
+(
+¡d”r
+, "%c\t%d\n", 
+node
+->
+c
+,‚ode->
+weight
+);
+
+151 
+	`´št_huffmª_š
+(
+node
+->
+right
+);
+
+153 
+	}
+}
+
+154 
+	$´št_Ëaf
+(
+huffmª_node
+ *
+node
+){
+
+155 ià(
+node
+ !ð
+NULL
+){
+
+156 
+	`´št_Ëaf
+(
+node
+->
+Ëá
+);
+
+157 ià(
+node
+->
+Ëá
+ =ð
+NULL
+ &&‚ode->
+right
+ =ðNULLè
+	`årštf
+(
+¡d”r
+, "%c\t%s\n",‚ode->
+c
+,‚ode->
+huffmª_code
+);
+
+158 
+	`´št_Ëaf
+(
+node
+->
+right
+);
+
+160 
+	}
+}
+
+162 
+	$maš
+(){
+
+164 
+FILE
+ *
+â
+ = 
+	`fÝ’
+("huffman", "r");
+
+165 
+huffmª_node
+ *
+roÙ
+ = 
+NULL
+;
+
+166 
+m­
+<, > 
+wÜd
+;
+
+167 
+	`»ad_fže
+(
+â
+, 
+wÜd
+);
+
+168 
+	`huffmª_Œ“_ü—‹
+(
+roÙ
+, 
+wÜd
+);
+
+169 
+	`fþo£
+(
+â
+);
+
+170 
+	`årštf
+(
+¡d”r
+, "pre-order:\n");
+
+171 
+	`´št_huffmª_´e
+(
+roÙ
+);
+
+172 
+	`årštf
+(
+¡d”r
+, "in-order:\n");
+
+173 
+	`´št_huffmª_š
+(
+roÙ
+);
+
+175 
+	`g‘_huffmª_code
+(
+roÙ
+);
+
+176 
+	`årštf
+(
+¡d”r
+, "the final„esult:\n");
+
+177 
+	`´št_Ëaf
+(
+roÙ
+);
+
+178 
+	`de¡Üy_huffmª_Œ“
+(
+roÙ
+);
+
+180 
+	}
+}
+
+	@
+1
+.
+0
+1
+36
+/home/lin/mach/huaffman/huffman.cpp
