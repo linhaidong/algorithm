@@ -126,13 +126,14 @@ int char_num_oper(elem_len_t *elems, char ** result){
     char zero = '0';
     int res_turn ; 
     for ( i = 0; i < elems->len2; i++){
-        int res_turn = elems->res_len +1 -i; 
-        res_p[res_turn] = +elems->s1[elems->len1-i-1]+elems->s2[elems->len2 -i-1 ] - zero;
-        res_p[res_turn] += res_p[res_turn-1];
+        res_turn = elems->res_len  -i; 
+        res_p[res_turn] += +elems->s1[elems->len1-i-1]+elems->s2[elems->len2 -i -1 ] - zero;
+        //res_p[res_turn] += res_p[res_turn-1];
         if (res_p[res_turn] > '9'){
             res_p[res_turn] -= 10;
             res_p[res_turn-1] += 1;
         }
+        printf("result %d is %c\r\n", res_turn, res_p[res_turn]);
     }
     if ((elems->len1- elems->len2) > 0){
         res_turn--;
@@ -142,6 +143,8 @@ int char_num_oper(elem_len_t *elems, char ** result){
                 res_p[res_turn] -= 10;
                 res_p[res_turn-1] += 1;
             }
+            printf("result %d is %c\r\n", res_turn, res_p[res_turn]);
+            res_turn--;
         }
     }
     if(res_p[0] == 1){
@@ -156,7 +159,10 @@ int long_num_add(char *s1, char *s2, char ** result){
     ret = length_charge(s1, s2, &elems);
     switch(elems.type){
         case LEN_BOTH_ZERO:
-            *result = NULL;
+            {
+                *result = NULL;
+                break;
+            }
         case LEN_ONE_ZERO:
             {
                 *result = elems.s1;
@@ -164,28 +170,86 @@ int long_num_add(char *s1, char *s2, char ** result){
                 break;
             }
         case LEN_NOT_EMPTY:
-            ret = char_num_oper(&elems, result);
+            {
+                ret = char_num_oper(&elems, result);
+                break;
+            }
         default:
             *result = NULL;
     }
     return ret;
 }
 
-int main(){
-    char * s1 = "1234";
-    char * s2 = "1234567";
+void result_print(char * result)
+{
+    int i = 0;
+    int len = 0;
+    if (result[0] == 0){
+        i = 1;
+        len = strlen(result+1);
+    }else{
+        len = strlen(result);
+        i = 0;
+    }
+    printf("len %d, result:", len);
+    for (; i< len+1; i++){
+        printf("%c", result[i]);
+    }
+    printf("\r\n");
+
+}
+int test( char * s1, char *s2){
     char * result;
     int  res;
     res = long_num_add(s1, s2, &result);
     if (res == 0){
-        int i = 0;
-        int len = strlen(result);
-        printf("result:");
-        for (i = 0; i< len; i++){
-            printf("%c", result[i]);
-        }
-        printf("\r\n");
+        result_print(result);
         free(result);
     }
     return 0;
 }
+
+int test2(int n){
+    int res;
+    char * rel_result = (char *)malloc(n);
+    memset(rel_result, '9', n);
+    char * one = "1";
+    char * oper_result = one;
+    char * tmp = NULL;
+    long_num_add(one, oper_result, &oper_result); 
+    if (res == 0){
+        result_print(oper_result);
+        free(oper_result);
+    }
+    while(1){
+       long_num_add(one, oper_result, &oper_result); 
+       if (res == 0){
+           result_print(oper_result);
+           if (tmp) free(tmp);
+           tmp = oper_result;
+       }
+       if (strcmp(oper_result, rel_result) == 0){
+           printf("end\r\n");
+           break;
+       }
+    }
+    if (tmp) free(tmp);
+}
+int main(){
+    char * s1 = "1234";
+    char * s2 = "12345";
+    test(s1, s2);
+    s1 = "99";
+    s2 = "9999";
+    test(s1, s2);
+    s1 = "913";
+    s2 = "99802";
+    test(s1, s2);
+    test2(3);
+
+}
+/*
+len 5, result:13579
+len 5, result:10098
+len 6, result:100715
+*/
