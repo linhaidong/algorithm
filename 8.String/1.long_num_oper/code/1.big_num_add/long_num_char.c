@@ -8,13 +8,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+//#define DEBUG 1
 typedef enum oper_type{
     LEN_BOTH_ZERO = 0,
     LEN_ONE_ZERO,
     LEN_NOT_EMPTY
 }oper_type_t;
 
+typedef enum result_type{
+    FIRST_ZERO = 0,
+    FIRST_AVAILABLE
+}result_type_t;
 /* --------------------------------------------------------------------------*/
 /**
  * @Synopsis  构建一个符合处理逻辑的结构，增加存储结构，减少逻辑结构
@@ -32,6 +36,11 @@ typedef struct elem_len{
     int res_len;
 }elem_len_t;
 
+typedef struct reslut{
+    char * rel_result;
+    char * oper_result;
+    result_type_t  type;
+}result_t;
 
 /* --------------------------------------------------------------------------*/
 /**
@@ -127,13 +136,15 @@ int char_num_oper(elem_len_t *elems, char ** result){
     int res_turn ; 
     for ( i = 0; i < elems->len2; i++){
         res_turn = elems->res_len  -i; 
-        res_p[res_turn] += +elems->s1[elems->len1-i-1]+elems->s2[elems->len2 -i -1 ] - zero;
+        res_p[res_turn] += (elems->s1[elems->len1-i-1] + elems->s2[elems->len2 -i -1 ] - zero);
         //res_p[res_turn] += res_p[res_turn-1];
         if (res_p[res_turn] > '9'){
             res_p[res_turn] -= 10;
             res_p[res_turn-1] += 1;
         }
+#ifdef DEBUG
         printf("result %d is %c\r\n", res_turn, res_p[res_turn]);
+#endif
     }
     if ((elems->len1- elems->len2) > 0){
         res_turn--;
@@ -143,7 +154,9 @@ int char_num_oper(elem_len_t *elems, char ** result){
                 res_p[res_turn] -= 10;
                 res_p[res_turn-1] += 1;
             }
+#ifdef DEBUG
             printf("result %d is %c\r\n", res_turn, res_p[res_turn]);
+#endif
             res_turn--;
         }
     }
@@ -198,7 +211,18 @@ void result_print(char * result)
     printf("\r\n");
 
 }
-int test( char * s1, char *s2){
+
+/* --------------------------------------------------------------------------*/
+/**
+ * @Synopsis  test function for long_num_add func
+ *
+ * @Param s1
+ * @Param s2
+ *
+ * @Returns   
+ */
+/* ----------------------------------------------------------------------------*/
+int two_num_add_test( char * s1, char *s2){
     char * result;
     int  res;
     res = long_num_add(s1, s2, &result);
@@ -209,47 +233,97 @@ int test( char * s1, char *s2){
     return 0;
 }
 
-int test2(int n){
+/* --------------------------------------------------------------------------*/
+/**
+ * @Synopsis  输出N位数中的所有的数
+ *            N=1，输出1-9
+ *            N=2，输出1-99
+ *            N=3  输出1-999
+ * @Param n 位数
+ *
+ * @Returns   
+ */
+/* ----------------------------------------------------------------------------*/
+int number_range_print(int n){
     int res;
+    //get memory for store max number
     char * rel_result = (char *)malloc(n);
     memset(rel_result, '9', n);
-    char * one = "1";
-    char * oper_result = one;
+
+    //
+    char * const one = "1";
+    char * one_tmp = "1";
+    //one_tmp for proeventing oper_result change the one point
+    //one variable shou be decorateing by const
+    char ** oper_result = &one_tmp;
+    //tmp for free unused memory space
     char * tmp = NULL;
-    long_num_add(one, oper_result, &oper_result); 
+    printf("len %d, result:%d\r\n", 1,1);
+
+    res = long_num_add(one, *oper_result, oper_result); 
     if (res == 0){
-        result_print(oper_result);
-        free(oper_result);
+        result_print(*oper_result);
     }
+
     while(1){
-       long_num_add(one, oper_result, &oper_result); 
-       if (res == 0){
-           result_print(oper_result);
-           if (tmp) free(tmp);
-           tmp = oper_result;
-       }
-       if (strcmp(oper_result, rel_result) == 0){
-           printf("end\r\n");
-           break;
-       }
+        tmp = *oper_result;
+        //as operation func use strlen function, 
+        //if oper_result first elems is zero, we should charge it
+        //This find by gdb debug
+        //TODO: create a result struct for avoid charge
+        if(*oper_result[0] == 0 )
+            res = long_num_add(one, *oper_result+1, oper_result); 
+        else
+            res = long_num_add(one, *oper_result, oper_result); 
+        if (res == 0){
+            result_print(*oper_result);
+            if (tmp) free(tmp);
+        }
+
+
+        //end operation
+        //if the result string is equal to max number string, stop
+        //should charge the first byte of result
+        //TODO:
+        if(*oper_result[0] == 0 ){
+            if (strcmp(*oper_result+1, rel_result) == 0){
+                printf("end\r\n");
+                break;
+            }
+        }else{
+            if (strcmp(*oper_result, rel_result) == 0){
+                printf("end\r\n");
+                break;
+            }
+        }
     }
-    if (tmp) free(tmp);
+    //free the lase mem
+    if (*oper_result) free(*oper_result);
 }
 int main(){
     char * s1 = "1234";
     char * s2 = "12345";
-    test(s1, s2);
+    two_num_add_test(s1, s2);
     s1 = "99";
     s2 = "9999";
-    test(s1, s2);
+    two_num_add_test(s1, s2);
     s1 = "913";
     s2 = "99802";
-    test(s1, s2);
-    test2(3);
+    two_num_add_test(s1, s2);
+    number_range_print(1);
 
 }
-/*
-len 5, result:13579
-len 5, result:10098
-len 6, result:100715
-*/
+/* result
+   len 5, result:13579
+   len 5, result:10098
+   len 6, result:100715
+    len 1, result:1
+    len 1, result:2
+    len 1, result:3
+    len 1, result:4
+    len 1, result:5
+    len 1, result:6
+    len 1, result:7
+    len 1, result:8
+    len 1, result:9
+   */
