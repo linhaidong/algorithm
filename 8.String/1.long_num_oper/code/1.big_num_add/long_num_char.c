@@ -93,7 +93,12 @@ int length_charge(char* s1, char *s2, elem_len_t * elems){
     elems->res_len  = len1 >len2 ? len1:len2;
     return 3;
 }
-
+static void carry_bit_oper(char * res_p, int res_turn){
+        if (res_p[res_turn] > '9'){
+            res_p[res_turn] -= 10;
+            res_p[res_turn-1] += 1;
+        }
+}
 /* --------------------------------------------------------------------------*/
 /**
  * @Synopsis  
@@ -134,26 +139,21 @@ int char_num_oper(elem_len_t *elems, char ** result){
     memset(res_p, 0, elems->res_len);
     char zero = '0';
     int res_turn ; 
+    //同位操作
     for ( i = 0; i < elems->len2; i++){
         res_turn = elems->res_len  -i; 
         res_p[res_turn] += (elems->s1[elems->len1-i-1] + elems->s2[elems->len2 -i -1 ] - zero);
-        //res_p[res_turn] += res_p[res_turn-1];
-        if (res_p[res_turn] > '9'){
-            res_p[res_turn] -= 10;
-            res_p[res_turn-1] += 1;
-        }
+        carry_bit_oper(res_p, res_turn);
 #ifdef DEBUG
         printf("result %d is %c\r\n", res_turn, res_p[res_turn]);
 #endif
     }
+    //超出部分操作
     if ((elems->len1- elems->len2) > 0){
         res_turn--;
         while(res_turn > 0){
-            res_p[res_turn] = res_p[res_turn]+elems->s1[res_turn-1];
-            if (res_p[res_turn] > '9'){
-                res_p[res_turn] -= 10;
-                res_p[res_turn-1] += 1;
-            }
+            res_p[res_turn] += +elems->s1[res_turn-1];
+            carry_bit_oper(res_p, res_turn);
 #ifdef DEBUG
             printf("result %d is %c\r\n", res_turn, res_p[res_turn]);
 #endif
